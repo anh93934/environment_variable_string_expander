@@ -27,3 +27,10 @@ A `$` followed by a non-name character (lowercase letter, digit, punctuation) is
 Variable names are restricted to ASCII uppercase letters and underscores (`A-Z`, `_`). Lowercase letters terminate a `$`-reference, so `$FOO_bar` expands `$FOO` and appends `_bar`.
 
 Default values are read verbatim up to the closing `}` — no further variable expansion happens inside a default. This is a deliberate simplification: recursive expansion inside defaults is a source of quoting ambiguity this library chooses not to open.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
